@@ -7,8 +7,8 @@ on:
     branches: [main]
 
 env:
-  DOCKERHUB_IMAGE: your-dockerhub-username/gitops-app
-  CONFIG_REPO: your-org/gitops-config
+  DOCKERHUB_IMAGE: jihye0n/gitops-app
+  CONFIG_REPO: its-jihyeon/gitops-config
   CONFIG_REPO_PATH: apps/gitops-app/overlays
 
 permissions:
