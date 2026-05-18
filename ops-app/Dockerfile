@@ -1,6 +1,6 @@
 # 1단계: 빌드
 FROM maven:3.9-eclipse-temurin-17-alpine AS builder
-WORKDIR /app
+WORKDIR /build
 
 # 의존성 캐시 최적화
 COPY pom.xml .
@@ -15,19 +15,12 @@ FROM eclipse-temurin:17-jre-alpine
 RUN apk add --no-cache curl
 WORKDIR /app
 
-# non-root 사용자 생성
-RUN addgroup -S spring && adduser -S spring -G spring
-
 # JAR 복사 및 권한 설정
-COPY --from=builder /app/target/*.jar app.jar
+COPY --from=builder /build/target/*.jar app.jar
 RUN chown spring:spring app.jar
 
 USER spring
 
 EXPOSE 8080
-
-# 헬스체크 (Actuator 필요)
-# HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
-#  CMD wget --no-verbose --tries=1 --spider http://localhost:8080/actuator/health || exit 1
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
